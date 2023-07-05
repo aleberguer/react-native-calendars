@@ -35,6 +35,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
     theme,
     sections,
     scrollToNextEvent,
+    scrollDebounceTime = 1000,
     avoidDateUpdates,
     onScroll,
     renderSectionHeader,
@@ -139,7 +140,7 @@ const InfiniteAgendaList = (props: AgendaListProps) => {
 
       list.current?.scrollToIndex(sectionIndex, true);
     }
-  }, 1000, {leading: false, trailing: true}), [ sections]);
+  }, scrollDebounceTime, {leading: false, trailing: true}), [ sections]);
 
   const layoutProvider = useMemo(
     () => new LayoutProvider(

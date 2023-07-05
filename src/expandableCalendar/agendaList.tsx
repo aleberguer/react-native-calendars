@@ -60,6 +60,8 @@ export interface AgendaListProps extends SectionListProps<any, DefaultSectionT> 
   viewOffset?: number;
   /** enable scrolling the agenda list to the next date with content when pressing a day without content */
   scrollToNextEvent?: boolean;
+  /** debounce time for scrolling to date event in milliseconds */
+  scrollDebounceTime?: number;
   /**
    * @experimental
    * If defined, uses InfiniteList instead of SectionList. This feature is experimental and subject to change.
@@ -85,6 +87,7 @@ const AgendaList = (props: AgendaListProps) => {
     theme,
     sections,
     scrollToNextEvent,
+    scrollDebounceTime = 1000,
     viewOffset = 0,
     avoidDateUpdates,
     onScroll,
@@ -194,7 +197,7 @@ const AgendaList = (props: AgendaListProps) => {
         viewOffset: (constants.isAndroid ? sectionHeight.current : 0) + viewOffset
       });
     }
-  }, 1000, {leading: false, trailing: true}), [viewOffset, sections]);
+  }, scrollDebounceTime, {leading: false, trailing: true}), [viewOffset, sections]);
 
   const _onViewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>; changed: Array<ViewToken>}) => {
     if (info?.viewableItems && !sectionScroll.current) {
